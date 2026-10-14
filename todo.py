@@ -1,5 +1,18 @@
 import argparse
+import os
+import json
 from datetime import datetime
+
+def load_tasks():
+    if not os.path.exists("tasks.json"):
+        return {}
+    with open("tasks.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def save_tasks(tasks):
+    with open("tasks.json", "w", encoding="utf-8") as f:
+        json.dump(tasks, f, ensure_ascii=False, indent=4)
 
 def build_parser():
     parser = argparse.ArgumentParser(
@@ -33,10 +46,27 @@ def build_parser():
 
     return parser
 def cmd_add(args):
+    tasks = load_tasks()
+    new_id = 1
+    for k in tasks:
+        if int(k) >= new_id:
+            new_id = int(k) + 1
+    tasks[str(new_id)] = {
+        "time": args.time,
+        "content": args.content,
+        "status": args.status,
+    }
+    save_tasks(tasks)
     print("添加：", args.content, args.status, args.time)
 
 def cmd_list(args):
-    print("列出全部（还没实现）")
+    tasks = load_tasks()
+    if not tasks:
+        print("还没有任务")
+        return
+    for k in sorted(tasks, key=int):
+        t = tasks[k]
+        print(k, t["status"], t["content"], t["time"])
 
 def cmd_done(args):
     print("把第", args.index, "条改成 Done")
@@ -45,7 +75,14 @@ def cmd_edit(args):
     print("修改第", args.index, "条为：", args.content)
 
 def cmd_delete(args):
-    print("删除第", args.index, "条")
+    tasks = load_tasks()
+    key = str(args.index)
+    if key not in tasks:
+        print("没有第", args.index, "条")
+        return
+    del tasks[key]
+    save_tasks(tasks)
+    print("已删除第", args.index, "条")
 
 def cmd_search(args):
     print("搜索：", args.keyword)
