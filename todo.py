@@ -47,12 +47,32 @@ def build_parser():
     return parser
 def cmd_add(args):
     tasks = load_tasks()
+    new_id = 1
+    for k in tasks:
+        if int(k)>= new_id:
+            new_id = int(k)+1
+    tasks[new_id] = {
+        "time": args.time,
+        "content": args.content,
+        "status": args.status,
+    }
     save_tasks(tasks)
-    print("添加：", args.content, args.status, args.time)
+    print("添加：",new_id,args.content,args.status,args.time)
 
 def cmd_list(args):
     tasks = load_tasks()
+    if not tasks:
+        print("还没有添加待办")
+    for k in sorted(tasks,key=int):
+        print(k, tasks[k]["time"], tasks[k]["content"], tasks[k]["status"])
 def cmd_done(args):
+    tasks = load_tasks()
+    key = str(args.index)
+    if key not in tasks:
+        print("还没有添加待办")
+        return
+    tasks[key]["status"] = "Done"
+    save_tasks(tasks)
     print("把第", args.index, "条改成 Done")
 
 def cmd_edit(args):
@@ -60,7 +80,12 @@ def cmd_edit(args):
 
 def cmd_delete(args):
     tasks = load_tasks()
-
+    key = str(args.index)
+    if key not in tasks:
+        print("还没有添加待办")
+        return
+    del tasks[key]
+    save_tasks(tasks)
     print("已删除第", args.index, "条")
 
 def cmd_search(args):
