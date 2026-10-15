@@ -1,13 +1,22 @@
 import argparse
 import os
 import json
+import sys
 from datetime import datetime
 
 def load_tasks():
     if not os.path.exists("tasks.json"):
         return {}
-    with open("tasks.json", "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open("tasks.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except json.JSONDecodeError:
+        print("tasks.json 内容损坏，不是合法的 JSON 文件。\n请手动检查该文件，或删掉它重新开始。")
+        sys.exit(1)
+    if not isinstance(data, dict):
+        print("tasks.json 的内容格式不对，应该是一个任务清单。\n请手动检查该文件，或删掉它重新开始。")
+        sys.exit(1)
+    return data
 
 
 def save_tasks(tasks):
@@ -48,6 +57,9 @@ def build_parser():
 
 def cmd_add(args):
     tasks = load_tasks()
+    if not args.content.strip():
+        print("添加的内容不可为空")
+        return
     new_id = 1
     for k in tasks:
         if int(k)>= new_id:
