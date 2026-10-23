@@ -1,4 +1,8 @@
 from storage import load_tasks, save_tasks
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
 
 
 def cmd_add(args):
@@ -31,9 +35,21 @@ def cmd_list(args):
     if not tasks:
         print("还没有添加待办")
         return
-
+    table = Table(title="待办清单")
+    table.add_column("编号", justify="center")
+    table.add_column("内容")
+    table.add_column("时间")
+    table.add_column("状态")
     for k in sorted(tasks, key=int):
-        print(k, tasks[k]["time"], tasks[k]["content"], tasks[k]["status"])
+        t = tasks[k]
+        if t["status"] == "Done":
+            status = "[green]Done[/green]"
+            row_style = "dim"
+        else:
+            status = "[yellow]Pending[/yellow]"
+            row_style = None
+        table.add_row(k, t["content"], t["time"], status, style=row_style)
+    console.print(table)
 
 
 def cmd_done(args):
