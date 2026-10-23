@@ -14,13 +14,14 @@
 ## 环境要求
 
 - Python 3.x
-- 无第三方依赖，只用标准库
+- 需要 `rich` 库（用于表格输出）
 
 ## 快速开始
 
 ```bash
-git clone https://github.com/Moonfringe/CMD-Todo-list.git
-cd CMD-Todo-list
+git clone https://github.com/Moonfringe/CLI-Todo-List.git
+cd CLI-Todo-List
+pip install rich
 python todo.py list
 ```
 
@@ -54,11 +55,16 @@ python todo.py list
 输出：
 
 ```
-1 2026-10-17 23:40 买牛奶 Pending
-2 2026-10-17 23:40 写实验报告 Done
+                     待办清单
+┌──────┬────────────┬──────────────────┬─────────┐
+│ 编号 │ 内容       │ 时间             │ 状态    │
+├──────┼────────────┼──────────────────┼─────────┤
+│  1   │ 买牛奶     │ 2026-10-23 16:52 │ Pending │
+│  2   │ 写实验报告 │ 2026-10-23 16:52 │ Done    │
+└──────┴────────────┴──────────────────┴─────────┘
 ```
 
-每行依次是：编号、时间、内容、状态。
+表格的列依次是：编号、内容、时间、状态。
 
 ### 标记完成 / 修改 / 删除
 
@@ -76,7 +82,7 @@ python todo.py delete 1                # 删除第 1 条
 python todo.py search 牛奶
 ```
 
-在任务内容里查找关键字，匹配到的会按列表格式打印出来。
+在任务内容里查找关键字，匹配到的会以表格形式打印出来。
 
 ### 查看帮助
 

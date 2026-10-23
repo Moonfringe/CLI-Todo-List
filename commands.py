@@ -106,11 +106,26 @@ def cmd_search(args):
     """在待办任务里搜索你输入的关键字的对应的任务 """
     tasks = load_tasks()
 
+    table = Table(title="搜索结果")
+    table.add_column("编号", justify="center")
+    table.add_column("内容")
+    table.add_column("时间")
+    table.add_column("状态")
+
     search_found = 0
     for k in sorted(tasks, key=int):
+        t = tasks[k]
         if args.keyword in tasks[k]["content"]:
-            print(k, tasks[k]["time"], tasks[k]["content"], tasks[k]["status"])
+            if t["status"] == "Done":
+                status = "[green]Done[/green]"
+                row_style = "dim"
+            else:
+                status = "[yellow]Pending[/yellow]"
+                row_style = None
+            table.add_row(k, t["content"], t["time"], status, style=row_style)
             search_found += 1
 
     if search_found == 0:
         print("没有找到")
+    else:
+        console.print(table)
