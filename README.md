@@ -1,3 +1,5 @@
+> **本分支是纯标准库版本，已冻结，不再更新。主开发在 main 分支。**
+
 # 待办清单 CLI
 
 一个用 Python 写的命令行待办清单工具。任务保存在本地 JSON 文件里，关掉程序再打开，数据还在。
@@ -19,8 +21,8 @@
 ## 快速开始
 
 ```bash
-git clone https://github.com/Moonfringe/CMD-Todo-list.git
-cd CMD-Todo-list
+git clone -b stdlib https://github.com/Moonfringe/CLI-Todo-List.git
+cd CLI-Todo-List
 python todo.py list
 ```
 
