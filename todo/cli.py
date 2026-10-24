@@ -1,6 +1,6 @@
 import argparse
 from datetime import datetime
-from commands import cmd_add,cmd_list,cmd_done,cmd_edit,cmd_delete,cmd_search
+from .commands import cmd_add,cmd_list,cmd_done,cmd_edit,cmd_delete,cmd_search
 
 def build_parser():
     parser = argparse.ArgumentParser(

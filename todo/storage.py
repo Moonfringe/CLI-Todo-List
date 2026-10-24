@@ -2,7 +2,7 @@ import json
 import sys
 import os
 
-TODO_FILE = "tasks.json"
+TODO_FILE = "../tasks.json"
 
 
 def load_tasks():

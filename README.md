@@ -21,17 +21,19 @@
 ```bash
 git clone https://github.com/Moonfringe/CLI-Todo-List.git
 cd CLI-Todo-List
-pip install rich
-python todo.py list
+pip install -r requirements.txt
+python -m todo list
 ```
 
 ## 命令用法
 
+> 所有命令都要在**项目根目录**下运行——`tasks.json` 会创建在当前目录。
+
 ### 添加任务
 
 ```bash
-python todo.py add "买牛奶"
-python todo.py add "写实验报告" -s Done
+python -m todo add "买牛奶"
+python -m todo add "写实验报告" -s Done
 ```
 
 输出：
@@ -49,7 +51,7 @@ python todo.py add "写实验报告" -s Done
 ### 查看全部任务
 
 ```bash
-python todo.py list
+python -m todo list
 ```
 
 输出：
@@ -69,9 +71,9 @@ python todo.py list
 ### 标记完成 / 修改 / 删除
 
 ```bash
-python todo.py done 1                  # 把第 1 条标记为 Done
-python todo.py edit 1 "买全脂牛奶"      # 修改第 1 条的内容
-python todo.py delete 1                # 删除第 1 条
+python -m todo done 1                  # 把第 1 条标记为 Done
+python -m todo edit 1 "买全脂牛奶"      # 修改第 1 条的内容
+python -m todo delete 1                # 删除第 1 条
 ```
 
 **删除后会自动重新编号**：删掉第 1 条，原来的第 2 条就变成第 1 条，保证编号始终连续。
@@ -79,7 +81,7 @@ python todo.py delete 1                # 删除第 1 条
 ### 搜索
 
 ```bash
-python todo.py search 牛奶
+python -m todo search 牛奶
 ```
 
 在任务内容里查找关键字，匹配到的会以表格形式打印出来。
@@ -87,7 +89,7 @@ python todo.py search 牛奶
 ### 查看帮助
 
 ```bash
-python todo.py -h
+python -m todo -h
 ```
 
 ## 数据存储
@@ -124,9 +126,14 @@ python todo.py -h
 ## 项目结构
 
 ```
-todo.py        入口：定义命令行参数，按命令分发
-storage.py     数据读写：tasks.json 的加载与保存
-commands.py    六个命令的具体实现
+todo/
+├── __init__.py     标记这是一个包
+├── __main__.py     让 python -m todo 能跑
+├── cli.py          入口：定义命令行参数，按命令分发
+├── commands.py     六个命令的具体实现
+└── storage.py      数据读写：tasks.json 的加载与保存
 ```
+
+`requirements.txt` 列出依赖，`tasks.json` 是运行时生成的数据。
 
 每个命令都是一次独立运行：读文件 → 改数据 → 写回文件。

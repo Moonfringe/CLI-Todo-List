@@ -1,4 +1,4 @@
-from storage import load_tasks, save_tasks
+from .storage import load_tasks, save_tasks
 from rich.console import Console
 from rich.table import Table
 
